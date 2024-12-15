@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/styles.css">
+  <title>Pixel Battle</title>
+</head>
+<body>
+  <div class="container">
+    <div id="user-info" class="user-info">
+      <p id="user-status"></p>
+      <button id="logout-button">Выйти</button>
+      <button id="admin-panel-button" class="hidden" onclick="goToAdminPanel()">Админ-панель</button>
+    </div>
+    <div class="controls">
+      <label id="colorPickerLabel" for="colorPicker">
+        <span class="color-indicator">🎨 Выберите цвет:</span>
+        <input type="color" id="colorPicker" value="#000000">
+      </label>
+    </div>
+    <canvas id="pixelCanvas"></canvas>
+    <button id="themeToggle" class="fixed-toggle">Сменить тему</button>
+  </div>
+  
+  <div id="auth-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Авторизация</h2>
+      <div class="auth-columns">
+        <div class="auth-column">
+          <h3>Регистрация</h3>
+          <input id="register-username" type="text" placeholder="Имя пользователя" />
+          <input id="register-password" type="password" placeholder="Пароль" />
+          <button onclick="register()">Зарегистрироваться</button>
+        </div>
+        <div class="auth-column">
+          <h3>Вход</h3>
+          <input id="login-username" type="text" placeholder="Имя пользователя" />
+          <input id="login-password" type="password" placeholder="Пароль" />
+          <button onclick="login()">Войти</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/static/script.js"></script>
+</body>
+</html>

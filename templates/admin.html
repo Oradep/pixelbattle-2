@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/styles.css">
+  <title>Admin Panel</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Админ-панель</h1>
+    <button onclick="clearPixels()">Очистить базу данных холста</button>
+    <div>
+      <h2>Удалить пользователя</h2>
+      <input id="delete-username" type="text" placeholder="Имя пользователя">
+      <button onclick="deleteUser()">Удалить</button>
+    </div>
+    <button onclick="goToIndex()">Выйти из панели</button>
+    <button id="themeToggle" class="fixed-toggle">Сменить тему</button>
+  </div>
+
+  <script>
+    async function clearPixels() {
+      const response = await fetch('/clear_pixels', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
+      });
+      const result = await response.json();
+      alert(result.message || result.error);
+    }
+
+    async function deleteUser() {
+      const username = document.getElementById('delete-username').value;
+      const response = await fetch('/delete_user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        },
+        body: JSON.stringify({ username })
+      });
+      const result = await response.json();
+      alert(result.message || result.error);
+    }
+
+
+    function goToIndex() {
+      window.location.href = '/?refresh=' + new Date().getTime();
+    }
+
+    themeToggle.addEventListener('click', () => {
+    const isDark = localStorage.getItem('theme') === 'dark';
+    if (isDark) {
+      localStorage.setItem('theme', 'light');
+      document.documentElement.style.setProperty('--bg-color', '#f7f6f3');
+      document.documentElement.style.setProperty('--text-color', '#444444');
+      document.documentElement.style.setProperty('--primary-color', '#82c79f');
+      document.documentElement.style.setProperty('--secondary-color', '#3aad6a');
+      themeToggle.style.color = '#444444';
+    } else {
+      localStorage.setItem('theme', 'dark');
+      document.documentElement.style.setProperty('--bg-color', '#101115');
+      document.documentElement.style.setProperty('--text-color', '#f7f6f3');
+      document.documentElement.style.setProperty('--primary-color', '#3aad6a');
+      document.documentElement.style.setProperty('--secondary-color', '#82c79f');
+      themeToggle.style.color = '#f7f6f3';
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const isDark = localStorage.getItem('theme') === 'dark';
+    if (isDark) {
+        document.documentElement.style.setProperty('--bg-color', '#101115');
+        document.documentElement.style.setProperty('--text-color', '#f7f6f3');
+        document.documentElement.style.setProperty('--primary-color', '#3aad6a');
+        document.documentElement.style.setProperty('--secondary-color', '#82c79f');
+        themeToggle.style.color = '#f7f6f3'; 
+    }
+})
+
+
+  </script>
+</body>
+</html>
